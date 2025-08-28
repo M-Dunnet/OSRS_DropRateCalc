@@ -127,7 +127,7 @@ class MultiDropSimulator:
             print(f"Rolls needed for {confidence*100:.2f}% chance of all drops: {int(np.percentile(self.kills_per_sim, confidence * 100))}")
 
     
-    def individual_drop_rate_intervals(self, confidence=0.95):
+    def individual_drop_rate_intervals(self, interval=0.95):
         """
         Compute the expected interval of kills for each item drop rate
         based on a geometric distribution approximation.
@@ -144,20 +144,20 @@ class MultiDropSimulator:
                 intervals[item] = (float('inf'), float('inf'))
             elif drop_rate == 1:
                 intervals[item] = (1, 1)
-            elif not (0 < confidence < 1):
+            elif not (0 < interval < 1):
                 intervals[item] = (float('inf'), float('inf'))
             else:
-                alpha = 1 - confidence
+                alpha = 1 - interval
                 lower = stats.geom.ppf(alpha / 2, drop_rate)
                 upper = stats.geom.ppf(1 - alpha / 2, drop_rate)
                 intervals[item] = (int(lower), int(upper))
 
-        print(f"Individual item rolls needed for a {confidence*100:.2f}% chance of drop:")
+        print(f"Individual item rolls needed for a {interval*100:.2f}% chance of drop:")
         for item, bounds in intervals.items():
             print(f"\t{item}: {bounds[0]} to {bounds[1]} rolls")
 
 
-    def combined_drop_interval(self, confidence_interval=0.95):
+    def combined_drop_interval(self, interval=0.95):
         """
         Compute the expected interval of kills needed to collect all items
         based on the simulated distribution.
@@ -168,14 +168,14 @@ class MultiDropSimulator:
         Returns:
         tuple: (lower_bound, upper_bound) number of kills for the given confidence
         """
-        if not (0 < confidence_interval < 1):
+        if not (0 < interval < 1):
             return (float('inf'), float('inf'))
 
-        alpha = 1 - confidence_interval
+        alpha = 1 - interval
         lower = np.percentile(self.kills_per_sim, alpha / 2 * 100)
         upper = np.percentile(self.kills_per_sim, (1 - alpha / 2) * 100)
 
-        print(f"{confidence_interval*100:.2f}% of players will get all drop between {int(lower)} and {int(upper)} rolls.")
+        print(f"{interval*100:.2f}% of players will get all drop between {int(lower)} and {int(upper)} rolls.")
 
 
 

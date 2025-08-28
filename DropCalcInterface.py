@@ -29,9 +29,9 @@ from lib.DropRateCalc import MultiDropSimulator, drop_chance, kills_for_confiden
 ###############
 
 # Individual drop calculations
-drop_chance(1/50, 75)
-kills_for_confidence(1/50, 0.90)
-drop_rate_interval(1/50, 0.5)
+drop_chance(drop_rate=1/50, kills=75)
+kills_for_confidence(drop_rate=1/50, confidence=0.90)
+drop_rate_interval(drop_rate=1/50, interval=0.5)
 
 # Multiple drop calculations
 drops = {
@@ -42,7 +42,7 @@ drops = {
 
 simulator = MultiDropSimulator(drops)
 simulator.combined_expected_kills()
-simulator.combined_kills_for_confidence(0.9)
-simulator.individual_drop_rate_intervals(0.5)
-simulator.combined_drop_interval(0.5)
+simulator.combined_kills_for_confidence(confidence=0.9)
+simulator.individual_drop_rate_intervals(interval=0.5)
+simulator.combined_drop_interval(interval=0.5)
 
